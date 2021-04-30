@@ -1,30 +1,34 @@
-import React, {Component} from 'react'
+import React, {Component, useContext} from 'react'
 import axios from 'axios'
+import {Link} from "react-router-dom";
+import Nav from "./Nav";
+
+
 export default class Students extends Component {
   constructor(props) {
       super(props);
       this.state = {
-          Students: []
+          s:[]
       };
   }
   gettodosData() {
       axios.get("http://localhost:4000/students").then(res => {
-              const data = res.data
-              console.log(data)
-              const Students = data.map(u =>
-                  <tr>
-                  <td>{u.roll}</td>
-                  <td>{u.name}</td>
-                  <td>{u.courses}</td>
-                  <td>{u.email}</td>
-                  <td><button type="click">view details</button></td>
-                  </tr>
-                  )
+              res.data.map(data=>{
+                this.setState({
+                  ...this.state,
+                  s:[
+                    ...this.state.s,
+                    data
+                  ]
+                })
+              })
+              
+           
+             
+             
+                  
 
-                  this.setState({
-                      Students
-                  })
-
+                 
           })
           
 
@@ -35,9 +39,40 @@ export default class Students extends Component {
   render() {
 
       return (
+        <>
+        <Nav/>
           <div>
-              {this.state.Students}
+               <table class="table table-success table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Roll</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Courses</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {this.state.s.map(u =>
+                
+                <tr>
+                    <th scope="row">{u.roll}</th>
+                    <td>{u.name}</td>
+                    <td>{u.courses}</td>
+                    <td>{u.email}</td>
+                    <td>
+                    <Link to={`/student/${u.roll}`}><button class="btn btn-info">View</button></Link>&nbsp;&nbsp;&nbsp;
+                     <Link to={`/delete/${u.roll}`}><button class="btn btn-warning">Delete</button></Link>&nbsp;&nbsp;&nbsp;
+                     <Link to={`/edit/${u.roll}`}><button class="btn btn-outline-secondary">Edit</button></Link>
+
+                    </td>
+                  </tr>
+                 
+                )}
+                </tbody>
+              </table>
           </div>
+          </>
       )
   }
 }

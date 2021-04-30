@@ -1,0 +1,26 @@
+.base{
+  
+    background-color:rgb(153, 135, 221);
+  }
+  
+.main-container {
+    margin-left: 22%;
+    text-align:center;
+    width: auto;
+    padding: 185px;
+    background: rgb(216, 115, 115);
+    background-position: 0em;
+    
+    
+  
+  }
+  .foot{
+    position: fixed;
+    left: 0;
+    bottom:0;
+    width:100%;
+    background-color: black;
+    color:white;
+    text-align: center;
+   }
+   

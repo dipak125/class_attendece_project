@@ -1,10 +1,12 @@
 import React from "react";
 import may from "./img/mayukh.jpg";
 import "./App.css";
+import Nav from "./Nav";
 
 const About = () => {
   return (
     <>
+    <Nav/>
       <section class="text-center about">
         <h1>About Us</h1>
         <div class="container">

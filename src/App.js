@@ -1,9 +1,8 @@
 
 import React, { useState } from "react";
-import {BrowserRouter,Route,Link} from "react-router-dom";
+import {BrowserRouter,Route,Link,Switch} from "react-router-dom";
 import Students from "./Students";
 import Student from "./Student";
-import Nav from "./Nav";
 import Home from "./Home";
 import Attendence from "./Attendence";
 import Present from "./Present";
@@ -14,71 +13,22 @@ import Foot from "./Foot";
 import About from "./About.jsx";
 import Contact from "./Contact.jsx";
 import Feedback from "./Feedback.jsx";
+import Register from "./Register.jsx";
+import Login from "./Login.jsx";
+import AddStu from "./AddStu";
+import "./homef.css"
+
 
 const App=()=>{
 
   const[state,setState]=useState({
-    students:[
-      {
-        roll:1,
-        name: "sudipta",
-        
-        
-      },
-      {
-        roll:2,
-        name: "Raza",
-        
-      },
-      {
-        roll:3,
-        name: "dipak gope",
-        
-      },
-      {
-        roll:4,
-        name: "subham",
-        
-      },
-      {
-        roll:5,
-        name: "dipankar",
-        
-      },
-      {
-        roll:6,
-        name: "mrinal",
-        
-      },
-      {
-        roll:7,
-        name: "sahil",
-        
-      },
-      {
-        roll:8,
-        name: "tapash mahato",
-        
-      },
-      {
-        roll:6,
-        name: "mrinal singh",
-        
-      },
-      {
-        roll:7,
-        name: "sahil",
-        
-      },
-      {
-        roll:8,
-        name: "tapash",
-        
-      },
-    ],
-    present:[
-     
-    ]
+      s:{
+        roll:"",
+        name:"",
+        courses:"",
+        email:"",
+
+      }
   })
  const presentStudent=(roll)=>{
       const student=state.students.find(s=>s.roll==roll);
@@ -93,6 +43,9 @@ const App=()=>{
      
   }
   const Addstudent=(student)=>{
+
+   
+
       const s=state.students.filter(s=>s.roll!=student.roll);
       setState({
         ...state,
@@ -112,28 +65,34 @@ const App=()=>{
       
     })
   }
+
+
   return(
     <>
      <BrowserRouter>
-       <Nav/>
-       <Route exact path="/" component={()=> <Home students={state.students} present={state.present}/>}/>
-        <Route  path="/students" component={()=><Students students={state.students}/>}/>
-        <Route  path="/student/:id" component={(props)=> <Student student={state.students.find(s=>s.roll==props.match.params.id)}/>}/>
-       <Route path="/attend" component={()=><Attendence students={state.students}/>}/>
-       <Route path="/present/:id" component={(props)=> <Present  presentStudent={ presentStudent} student={state.students.find(s=>s.roll==props.match.params.id)}/>}/>
-       <Route path="/add" component={()=><AddStudent Addstudent={Addstudent} student={
-         {
-           roll:"",
-           name:""
-         }
-       }/>}/>
-       <Route path="/edit/:id" component={(props)=> <AddStudent values={"Edit details"} Addstudent={Addstudent} student={state.students.find(student=>student.roll==props.match.params.id)}/>}/>
-       <Route path="/delete/:id" component={(props)=> <Delete del={del} student={state.students.find(student=>student.roll==props.match.params.id)}/>}/>
-       <Route path="/teacher" component={()=> <Teacher/>}/>
-       <Route path="/about" component={()=> <About/>}/>
-       <Route path="/contact" component={()=><Contact/>}/>
-       <Route path="/feed" component={()=> <Feedback/>}/>
+    
+    <div className="base"> 
+     <Route exact path="/" component={()=><Login/>}/> 
+       <Route exact path="/register" component={()=> <Register/>}/>
+       </div>
+       <Route  exact path="/home" component={()=> <Home students={state.students} present={state.present}/>}/>
+       <Route exact  path="/students" component={()=><Students students={state.students}/>}/>
+        <Route exact path="/student/:id" component={(props)=> <Student id={props.match.params.id}/>}/>
+       <Route exact path="/attend" component={()=><Attendence students={state.students}/>}/>
+       <Route exact path="/present/:id" component={(props)=> <Present  presentStudent={ presentStudent} student={state.students.find(s=>s.roll==props.match.params.id)}/>}/>
+       <Route exact path="/add" component={()=><AddStu/>}/>
+       
+      
+       <Route exact path="/edit/:id" component={(props)=> <AddStudent values={"Edit details"} Addstudent={Addstudent} id={props.match.params.id}/>}/>
+       <Route exact path="/delete/:id" component={(props)=> <Delete del={del} id={props.match.params.id}/>}/>
+       <Route exact path="/teacher" component={()=> <Teacher/>}/>
+       <Route exact path="/about" component={()=> <About/>}/>
+       <Route exact path="/contact" component={()=><Contact/>}/>
+       <Route exact path="/feed" component={()=> <Feedback/>}/>
+      
+      
        <Foot/>
+      
      </BrowserRouter>
     
     </>

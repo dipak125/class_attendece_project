@@ -1,6 +1,7 @@
 import React from "react";
 import "./Details.css";
 import Koala from "./img/Koala.jpg";
+import Nav from "./Nav";
 const Present=(props)=>{
     const{student,presentStudent}=props;
     
@@ -14,6 +15,7 @@ const Present=(props)=>{
     
     return(
         <>
+        <Nav/>
              <div class="container">
     
     <h2>Student Details:</h2>

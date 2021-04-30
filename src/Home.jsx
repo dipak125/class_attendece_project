@@ -1,13 +1,88 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
+import axios from 'axios';
+import Nav from "./Nav";
 
 
 
 const Home = () => {
 
-  const [selectedDate, setSelectedDate] = useState(null)
+ 
+  
+   
+ 
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const[state,setState]=useState({
+    data:[],
+    s:[],
+    p:[]
+  })
+ //const date1=selectedDate.toLocaleDateString();
+ 
+ 
+
+ useEffect(()=>{
+      axios.get("http://localhost:4000/students").then(res=>{
+        setState({
+          ...state,
+          data:res.data
+        })
+        
+           
+ })
+},[])
+
+
+
+ const change=(date1)=>{
+  let p=new Array(0);
+  console.log(date1)
+  
+   
+    console.log("p is",p)
+    setState({
+      ...state,
+      s:[]
+    })
+    for(let i=0;i<state.data.length;i++)
+    {
+     if(typeof state.data[i].date==='undefined')
+     {}
+     else
+     {
+       let f=state.data[i].date.find(v=>v==date1)
+     let d4=state.data[i]
+     if(typeof f==='undefined')
+     {
+     
+          p.push(state.data[i])
+        
+      
+     
+     
+     }
+   
+  
+     
+      
+    }
+       
+   
+  }
+ setState({
+   ...state,
+   s:p
+ })
+      
+
+     }
+   
+  
+ 
+  
+ 
 
 
   const d = new Date();
@@ -15,36 +90,47 @@ const Home = () => {
   const m = 1 + d.getMonth();
   const y = d.getFullYear();
   return (
-
+<>
+<Nav/>
     <div>
       <div class="left">
         <div>
           <div class="top">
             <u><h1>About course:</h1></u>
-            <h3>Include every Bootstrap JavaScript plugin and dependency with one of our two bundles. Both bootstrap.bundle.js and bootstrap.bundle.min.js include Popper for
-                              our tooltips and popovers. For more information about what’s included in Bootstrap, please see our contents section. Going to see the changes</h3>
+           <h3>
+           <ul>
+                <li>React</li>
+                <li>Node </li>
+                <li>Mongo Db</li>
+                
+              </ul>  
+           </h3>
           </div>
           <div class="bottom">
             <u><h1>Today's topic:</h1></u>
-            <h3>Read and subscribe to The Official Bootstrap Blog.
-            Join the official Slack room.
-            Chat with fellow Bootstrappers in IRC. On the irc.freenode.net server, in the ##bootstrap channel.
-            On the irc.freenode.net server, in the ##bootstrap channel
-                               delivery mechanisms for maximum discoverability.</h3>
+            <h4>React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.
+
+Declarative views make your code more predictable and easier to debug..</h4>
+
           </div>
         </div>
       </div>
       <div class="right">
-        <u><h3><center>Defaulter's List</center></h3></u>
-        <h3><center>Date : {day}-0{m}-{y}</center></h3>
+        <u><h3><center>Absent Student's List</center></h3></u>
+        <h3><center>Present Date : {day}-0{m}-{y}</center></h3>
         <div><center>
           <DatePicker
 
             placeholder="Choose date"
             selected={selectedDate}
-            onChange={date => setSelectedDate(date)}
+            onChange={date =>{
+              setSelectedDate(date);
+              change(date.toLocaleDateString())
+             
+            }}
             dateFormat='dd-MM-yyyy'
             isClearable />
+            
         </center></div>
         <table class="table">
           <thead>
@@ -55,58 +141,29 @@ const Home = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
+          {
+     
+        state?.s?.map(data=>
+          <tr>
+          <th scope="row">{data?.roll}</th>
 
-              <td>Rajiv</td>
-            </tr>
+          <td>{data?.name}</td>
+        </tr>
+          
+         
+               
+         )}
+           
 
-            <tr class="table-primary">
-              <th scope="row">2</th>
-
-              <td>Sudipta</td>
-            </tr>
-            <tr class="table-secondary">
-              <th scope="row">3</th>
-
-              <td>Raz</td>
-            </tr>
-            <tr class="table-success">
-              <th scope="row">4</th>
-
-              <td>Dipak</td>
-            </tr>
-            <tr class="table-danger">
-              <th scope="row">5</th>
-
-              <td>Dipankar</td>
-            </tr>
-            <tr class="table-warning">
-              <th scope="row">6</th>
-
-              <td>Sahil</td>
-            </tr>
-            <tr class="table-info">
-              <th scope="row">7</th>
-
-              <td>Mrinal</td>
-            </tr>
-            <tr class="table-light">
-              <th scope="row">8</th>
-
-              <td>Koushik</td>
-            </tr>
-            <tr class="table-dark">
-              <th scope="row">9</th>
-
-              <td>Mrinal</td>
-            </tr>
+            
           </tbody>
         </table>
 
       </div>
     </div>
+    </>
 
   )
 }
-export default Home;
+
+export default Home

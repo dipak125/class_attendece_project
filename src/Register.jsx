@@ -1,88 +1,115 @@
 
 
+import axios from 'axios';
 import React, { Component } from 'react'
+import {Link} from "react-router-dom"
+import NavLog from "./NavLog.jsx";
+import "./homef.css"
 
 class App extends Component {
   constructor(){
     super()
     this.state={
-     fullName:'',
-     username:'',
+     fullname:'',
+    
      email:'',
-     password:''
+     password:'',
+     role:''
     }
-    this.changeFullname = this.changeFullname.bind(this)
-    this.changeUsername = this.changeUsername.bind(this)
-    this.changeEmail  = this.changeEmail.bind(this)
-    this.changePassword = this.changePassword.bind(this)
+   
   }
-  changeFullname(event){
+ 
+  onChange=(e)=>{
+    e.preventDefault();
+    const{name,value}=e.target;
     this.setState({
-      fullName:event.target.value
+      ...this.State,
+      [name]:value
     })
+   
+    
   }
-  changeUsername(event){
-   this.setState({
-     username:event.target.value
-   })
- }
- changeEmail(event){
-   {
-     this.setState({
-       email:event.target.value
-     })
-   }
- }
- changePassword(event){
-   {
-     this.setState({
-       password:event.target.value
-     })
-   }
- }
- onSubmit(event){
-   event.preventDefault()
-   const registered ={
-     fullName:this.state.fullName,
-     username:this.state.username,
-     email:this.state.email,
-     password:this.state.password
-   }
- }
- render() {
-   return (
-     <div>
-         <div className="container">
-           <div className="form-div">
-             <form onSubmit={this.onSubmit}>
-               <input type='text'
-               placeholder='FullName'
-               onChange={this.changeFullname}
-               value={this.state.fullname}
-               className='form-control form-group'
-               />
-               <input type='text'
-               placeholder='Username'
-               onChange={this.changeUsername}
-               value={this.state.username}
-               className='form-control form-group'/>
-                <input type='text'
-               placeholder='E-mail'
-               onChange={this.changeEmail}
-               value={this.state.email}
-               className='form-control form-group'/>
-                <input type='password'
-               placeholder='Password'
-               onChange={this.changePassword}
-               value={this.state.password}
-               className='form-control form-group'/>
-               <input type="submit" className='btn btn-danger btn-block' value='Submit' />
-             </form>
-           </div>
+//  onSubmit(event){
+//    event.preventDefault()
+//    const registered ={
+//      fullName:this.state.fullName,
+    
+//      email:this.state.email,
+//      password:this.state.password,
+//      role:this.state.role
+//    }
+//  }
 
-         </div>
-     </div>
-   )
- }
+  
+ handleSubmit=()=>{
+  
+  axios({
+    method: 'post',
+    url: 'http://localhost:4000/users',
+    data: {
+      fullname: this.state.fullname,
+     
+      email:this.state.email,
+      password:this.state.password,
+      role:this.state.role
+    }
+  });
+   
+
+
+}
+
+
+
+
+
+render() {
+  return (
+    <>
+    <NavLog/>
+    <div>
+        <div className="main-container">
+        <div className="card col-8 col-lg-4 login-card mt-2 hv-center">
+            <form >
+                <div class= "p-3 mb-2 bg-info text-white"><h3>Register</h3></div>
+               <div>
+              <input type='text'
+              placeholder='FullName' name="fullname"
+              onChange={this.onChange}
+              value={this.state.fullname}
+              className='form-control '
+              />
+               </div>
+                 <div>
+               <input type='text'
+              placeholder='E-mail'
+              onChange={this.onChange}  name="email"
+              value={this.state.email}
+              className='form-control'/>
+             </div>
+             <div>
+               <input type='password'
+              placeholder='Password'
+              onChange={this.onChange} name="password"
+              value={this.state.password}
+              className='form-control'/>
+              </div>
+              <div>
+               <input type='text'
+              placeholder='Role'
+              onChange={this.onChange} name="role"
+              value={this.state.role}
+              className='form-control'/>
+              </div>
+              <Link to="/"> <button type="button" className='btn btn-info btn-lg'onClick={this.handleSubmit}>submit</button></Link>
+            </form>
+            </div>
+          </div>
+       </div>
+       </>
+        
+    
+  )
+}
 }
 export default App;

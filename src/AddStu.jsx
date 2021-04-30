@@ -2,79 +2,86 @@ import React,{useEffect, useState} from "react";
 import Nav from "./Nav";
 import axios from "axios";
 import "./Feedback.css"
-
-const AddStudent=(props)=>{
-    const{student,Addstudent,values,id}=props;
+const AddStudent=()=>{
+ 
     
-     let r="";
-     let n="";
-     let c="";
-     let e="";
-     let i=""
-
+    
      const[state,setState]=useState({
        i:"",
       s:{
-          roll:r,
-          name:n,
-          courses:c,
-          email:e
+          roll:"",
+          name:"",
+          courses:"",
+          email:""
 
 
-      }
+      },
+      data:[]
 });
      useEffect(()=>{
-      axios.get(`http://localhost:4000/students/${id}`).then(res=>{
-        console.log("name is",res.data.name);
-        r=res.data.roll
-        i=res.data._id
-       
-        n=res.data.name
-        c=res.data.courses
-        e=res.data.email
+      axios.get(`http://localhost:4000/students/`).then(res=>{
+        console.log("name is",res.data)
+        let e=[]
+        for(let i=0;i<res.data.length;i++)
+        {
+                e.push(res.data[i].roll)
+        }
         setState({
-         ...state,
-         i:i,
-         s:{
-          roll:r,
-          name:n,
-          courses:c,
-          email:e
-         }
+            ...state,
+            data:[
+                ...e
+            ]
+            
 
         })
        
+         })
+        
+
+        
+       
       
-      })
+    
     
     },[])
    
-   
+    console.log(state.data)
   
     const change=(e)=>{
         const{name,value}=e.target;
-       
         setState({
             ...state,
             s:{
                 ...state.s,
-                [name]: value
+                [name]:value
             }
         })
+        console.log(state.s)
+       
+       
         
     }
+  
    
-console.log("id is",state.i)
 
 const handleSubmit=()=>{
-  
-
-  axios.post(`http://localhost:4000/students/${state.i}`,{
-    roll:state.s.roll,
-    name:state.s.name,
-    email:state.s.email,
-    courses:state.s.courses
-  })
+    
+   let f=state.data.find(d1=>d1===state.s.roll)
+    console.log("value is",f)
+    if(f!=null)
+    {
+        alert("roll no is alredy exist")
+    }
+    else
+    {
+        axios.post(`http://localhost:4000/students/${state.i}`,{
+            roll:state.s.roll,
+            name:state.s.name,
+            email:state.s.email,
+            courses:state.s.courses
+          })
+    }
+   
    
   
 
@@ -91,12 +98,12 @@ const handleSubmit=()=>{
 
 
     return(
-      <>
-      <Nav/>
+        <>
+        <Nav/>
         <div class="form-group">
             
             <form class="cont1">
-            <h3>{values}</h3>
+           
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Roll no</label>
     <input type="text" class="form-control" name="roll" value={state.s.roll}onChange={change}/>

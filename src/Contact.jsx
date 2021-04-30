@@ -1,27 +1,90 @@
-import React from "react";
+import axios from 'axios';
+import React, { Component } from 'react'
+import {Link} from "react-router-dom"
+import Nav from "./Nav";
 
-const Contact = () => {
+
+class Contact extends Component {
+  constructor(){
+    super()
+    this.state={
+     name:'',
+    
+     email:'',
+     message:'',
+     
+    }
+   
+  }
+ 
+  onChange=(e)=>{
+    e.preventDefault();
+    const{name,value}=e.target;
+    this.setState({
+      ...this.State,
+      [name]:value
+    })
+   
+    console.log(this.state)
+  }
+//  onSubmit(event){
+//    event.preventDefault()
+//    const registered ={
+//      fullName:this.state.fullName,
+    
+//      email:this.state.email,
+//      password:this.state.password,
+//      role:this.state.role
+//    }
+//  }
+
+  
+ handleSubmit=()=>{
+  
+  axios({
+    method: 'post',
+    url: 'http://localhost:4000/contacts',
+    data: {
+      name: this.state.name,
+     
+      email:this.state.email,
+      message:this.state.message,
+      
+    }
+  });
+   
+
+
+}
+
+
+
+
+    render(){
     return (
+      <>
+      <Nav/>
        <div className="cont">
            <h1>Contact Us:</h1>
-           <form class="box" action="#">
+           <form class="box">
 
 
 
-                    <input type="text" name="" placeholder="Name" />
+                    <input type="text" name="name" placeholder="Name" onChange={this.onChange} value={this.state.name} />
 
-                    <input type="text" name="" placeholder="Email Address" />
+                    <input type="text" name="email" placeholder="Email Address"onChange={this.onChange} value={this.state.email} />
 
-                    <input type="text" name="" placeholder="Message" />
+                    <input type="text" name="message" placeholder="Message"onChange={this.onChange} value={this.state.message} />
 
-                    <input type="submit" name="" value="Submit" />
+                    <button type="button" class="btn btn-danger"  onClick={this.handleSubmit} >Submit</button>
 
                 </form>
 
        </div>
             
-        
+        </>
 
     )
+}
 }
 export default Contact;

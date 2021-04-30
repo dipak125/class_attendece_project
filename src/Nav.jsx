@@ -11,7 +11,7 @@ const Nav = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="nav navbar-nav navbar-right">
             <li className="nav-item">
-              <Link to="/" className="nav-link active">&nbsp;&nbsp;&nbsp;Home</Link>
+              <Link to="/home" className="nav-link active">&nbsp;&nbsp;&nbsp;Home</Link>
             </li>
             <li className="nav-item dropdown">
               <Link to="/members" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">&nbsp;Member's Area</Link>
