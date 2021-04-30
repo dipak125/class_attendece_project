@@ -33,20 +33,28 @@ import { useHistory,Link } from "react-router-dom";
            
             
            
-          let d1= users.find(user=>user.email===state.email)
-          let d2=users.find(user=>user.password==state.password)
-          console.log(d1,"==",d2)
-           
-           
-               if(typeof d1!='undefined' && typeof d2!='undefined')
-               {
-                history.push("/home");
-               }
-               else
-               {
-                   alert("invalid")
-               }
-
+            let e=true 
+            let a=0
+            for(let i=0;i<res.data.length;i++){
+              if(res.data[i].email==state.email)
+              {
+                a++
+                if(res.data[i].password==state.password)
+                {
+                  console.log(res.data[i].email,res.data[i].password,state.email,state.password)
+                  e=false
+                  
+                  history.push("/home"); 
+   
+                }
+               
+              }
+            }
+           if(e==true && a!=0)
+           {
+             alert("Invalid")
+             
+           }
                
                 
                
